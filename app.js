@@ -10,7 +10,7 @@ const PORT = 3000;
 
 // Secret key for JWT & Whitelisted Domains & JWT Expiry
 const JWT_SECRET = process.env.JWT_SECRET_KEY;
-const whitelist = ["http://example.com", "http://yourdomain.com", "http://localhost:8000"];
+const whitelist = ["http://example.com", "http://yourdomain.com", "http://localhost:8000", "http://www.localhost:8000", "http://www.localhost:9000"];
 const expiresIn = "10s"; // Set an expiration time for the token (e.g., 1 hour)
 
 // Configure CORS options
@@ -95,6 +95,69 @@ app.post("/api/shopify", validateToken, (req, res) => {
 			console.log(response.status);
 			res.send(response.data);
 			res.status(response.status);
+		})
+		.catch((error) => {
+			console.log(error);
+			console.log(error.status);
+			res.send(error);
+			res.status(error.status);
+		});
+});
+
+app.post("/api/verify", validateToken, (req, res) => {
+	let email = req.body.email;
+	let token = req.body.token;
+	let config = {
+		method: "GET",
+		maxBodyLength: Infinity,
+		url: process.env.SHOPIFY_CUSTOMER_URL + "/search.json?query=email:" + email,
+		headers: {
+			"X-Shopify-Access-Token": process.env.SHOPIFY_ACCESS_TOKEN,
+			"Content-Type": "application/json",
+		},
+	};
+	console.log(config);
+	axios
+		.request(config)
+		.then((response) => {
+			console.log(response.data.customers[0]);
+			let responseBody = response.data.customers[0];
+			if (responseBody.email == email && responseBody.first_name == token) {
+				let customerId = responseBody.id;
+				let data = JSON.stringify({
+					customer: {
+						id: customerId,
+						tags: "",
+						first_name: "",
+					},
+				});
+				let config = {
+					method: "PUT",
+					maxBodyLength: Infinity,
+					url: process.env.SHOPIFY_CUSTOMER_URL + "/" + customerId + ".json",
+					headers: {
+						"X-Shopify-Access-Token": process.env.SHOPIFY_ACCESS_TOKEN,
+						"Content-Type": "application/json",
+					},
+					data: data,
+				};
+				console.log(config);
+				axios
+					.request(config)
+					.then((response) => {
+						res.send({
+							redirection: "http://localhost:8000/subscribed/",
+						});
+						console.log(response.data);
+						res.status(response.status);
+					})
+					.catch((error) => {
+						console.log(error);
+						console.log(error.status);
+						res.send(error);
+						res.status(error.status);
+					});
+			}
 		})
 		.catch((error) => {
 			console.log(error);
