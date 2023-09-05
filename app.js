@@ -5,6 +5,7 @@ const axios = require("axios");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const rateLimit = require("express-rate-limit");
+const businessLogic = require("./modules/businessLogic");
 const app = express();
 const PORT = 3000;
 
@@ -60,7 +61,8 @@ app.listen(PORT, (error) => {
 
 //Apply CORS middleware with options for specific endpoints
 app.use("/api/auth", cors(corsOptions)); // Apply to specific endpoint
-app.use("/api/shopify", cors(corsOptions)); // Apply to specific endpoint
+app.use("/api/subscribe", cors(corsOptions)); // Apply to specific endpoint
+app.use("/api/verify", cors(corsOptions));
 
 //Endpoint to generate JWT Token
 app.post("/api/auth", (req, res) => {
@@ -76,93 +78,27 @@ app.post("/api/auth", (req, res) => {
 });
 
 // Shopify API Call
-app.post("/api/shopify", validateToken, (req, res) => {
-	let data = JSON.stringify(req.body);
-	let config = {
-		method: req.method,
-		maxBodyLength: Infinity,
-		url: process.env.SHOPIFY_URL,
-		headers: {
-			"X-Shopify-Access-Token": process.env.SHOPIFY_ACCESS_TOKEN,
-			"Content-Type": "application/json",
-		},
-		data: data,
-	};
-	axios
-		.request(config)
-		.then((response) => {
-			console.log(JSON.stringify(response.data));
-			console.log(response.status);
-			res.send(response.data);
-			res.status(response.status);
-		})
-		.catch((error) => {
-			console.log(error);
-			console.log(error.status);
-			res.send(error);
-			res.status(error.status);
-		});
+app.post("/api/subscribe", validateToken, async (req, res) => {
+	try {
+		let data = JSON.stringify(req.body.email);
+		const result = await businessLogic.subscribeUser(data);
+		res.send(result.responseBody);
+		res.status(result.status);
+	} catch (error) {
+		res.send(error);
+		res.status(error.status);
+	}
 });
 
-app.post("/api/verify", validateToken, (req, res) => {
-	let email = req.body.email;
-	let token = req.body.token;
-	let config = {
-		method: "GET",
-		maxBodyLength: Infinity,
-		url: process.env.SHOPIFY_CUSTOMER_URL + "/search.json?query=email:" + email,
-		headers: {
-			"X-Shopify-Access-Token": process.env.SHOPIFY_ACCESS_TOKEN,
-			"Content-Type": "application/json",
-		},
-	};
-	console.log(config);
-	axios
-		.request(config)
-		.then((response) => {
-			console.log(response.data.customers[0]);
-			let responseBody = response.data.customers[0];
-			if (responseBody.email == email && responseBody.first_name == token) {
-				let customerId = responseBody.id;
-				let data = JSON.stringify({
-					customer: {
-						id: customerId,
-						tags: "",
-						first_name: "",
-					},
-				});
-				let config = {
-					method: "PUT",
-					maxBodyLength: Infinity,
-					url: process.env.SHOPIFY_CUSTOMER_URL + "/" + customerId + ".json",
-					headers: {
-						"X-Shopify-Access-Token": process.env.SHOPIFY_ACCESS_TOKEN,
-						"Content-Type": "application/json",
-					},
-					data: data,
-				};
-				console.log(config);
-				axios
-					.request(config)
-					.then((response) => {
-						res.send({
-							redirection: "http://localhost:8000/subscribed/",
-						});
-						console.log(response.data);
-						res.status(response.status);
-					})
-					.catch((error) => {
-						console.log(error);
-						console.log(error.status);
-						res.send(error);
-						res.status(error.status);
-					});
-			}
-		})
-		.catch((error) => {
-			console.log(error);
-			console.log(error.status);
-			res.send(error);
-			res.status(error.status);
-		});
+app.post("/api/verify", validateToken, async (req, res) => {
+	let email = JSON.stringify(req.body.email);
+	let token = JSON.stringify(req.body.token);
+	try {
+		const result = await businessLogic.verifySubscriber(email, token);
+		res.send(result.responseBody);
+		res.status(result.status);
+	} catch (error) {
+		res.send(error);
+		res.status(error.status);
+	}
 });
