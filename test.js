@@ -3,7 +3,7 @@ const businessLogic = require("./modules/businessLogic");
 
 // (async () => {
 // 	try {
-// 		const result = await shopifyApi.getCustomers("liamn2011@gmail.comn");
+// 		const result = await shopifyApi.getCustomers("");
 // 		console.log("Success", result);
 // 	} catch (error) {
 // 		console.log("Error", error);
@@ -12,7 +12,7 @@ const businessLogic = require("./modules/businessLogic");
 
 // (async () => {
 // 	try {
-// 		const result = await shopifyApi.updateCustomers(5802138108110);
+// 		const result = await shopifyApi.updateCustomers();
 // 		console.log("Success", result);
 // 	} catch (error) {
 // 		console.log("Error", error);
@@ -21,7 +21,7 @@ const businessLogic = require("./modules/businessLogic");
 
 (async () => {
 	try {
-		const result = await businessLogic.subscribeUser("liamn2011222@gmail.com");
+		const result = await businessLogic.subscribeUser("");
 	} catch (error) {
 		console.log("Error", error);
 	}
