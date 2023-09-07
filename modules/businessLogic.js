@@ -14,12 +14,12 @@ exports.subscribeUser = async (email) => {
 		if (customersArray.length == 0) {
 			const result = await createUser(email);
 			console.log(result.status);
-			return result;
+			return utilities.jsonResponse({ message: "Congratulations, you've become a muttlifer" }, 200);
 		} else {
 			if (result.responseBody.customers[0].tags == "Verified" && result.responseBody.customers[0].email == email) {
-				return utilities.jsonResponse({ errorCode: 1, error: "You've already registered" }, 409);
+				return utilities.jsonResponse({ message: "You've already registered" }, 200);
 			} else {
-				return utilities.jsonResponse({ errorCode: 2, error: "You need to verify your email address" }, 400);
+				return utilities.jsonResponse({ message: "You need to verify your email address" }, 200);
 			}
 		}
 	} catch (error) {
@@ -49,15 +49,15 @@ exports.verifySubscriber = async (email, token) => {
 		const result = await shopifyApi.getCustomers(email);
 		const customersArray = result.responseBody.customers[0];
 		if (!customersArray) {
-			return utilities.jsonResponse({ errorCode: 3, error: "No customer found with this email." }, 401);
+			return utilities.jsonResponse({ errorCode: 3, error: "No customer found with this email." }, 200);
 		}
 		if (customersArray.tags == token && customersArray.email == email) {
 			const updateResult = await shopifyApi.updateCustomers(result.responseBody.customers[0].id);
 			return updateResult;
 		} else if (customersArray.tags == "Verified" && customersArray.email == email) {
-			return utilities.jsonResponse({ errorCode: 4, error: "You've already verified, Thank you for subscribing" }, 400);
+			return utilities.jsonResponse({ message: "You've already verified, Thank you for subscribing" }, 200);
 		} else {
-			return utilities.jsonResponse({ errorCode: 5, error: "Email & Token does not match" }, 412);
+			return utilities.jsonResponse({ message: "Email & Token does not match" }, 200);
 		}
 	} catch (error) {
 		console.error("An error occurred:", error);

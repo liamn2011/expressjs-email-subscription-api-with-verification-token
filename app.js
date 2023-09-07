@@ -1,7 +1,6 @@
 // Importing Modules
 require("dotenv").config();
 const express = require("express");
-const axios = require("axios");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const rateLimit = require("express-rate-limit");
