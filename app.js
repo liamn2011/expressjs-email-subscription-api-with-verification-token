@@ -80,25 +80,25 @@ app.post("/api/auth", (req, res) => {
 // Shopify API Call
 app.post("/api/subscribe", validateToken, async (req, res) => {
 	try {
-		let data = JSON.stringify(req.body.email);
-		const result = await businessLogic.subscribeUser(data);
-		res.send(result.responseBody);
+		let email = req.body.email;
+		const result = await businessLogic.subscribeUser(email);
 		res.status(result.status);
+		res.send(result.responseBody);
 	} catch (error) {
-		res.send(error);
 		res.status(error.status);
+		res.send(error);
 	}
 });
 
 app.post("/api/verify", validateToken, async (req, res) => {
-	let email = JSON.stringify(req.body.email);
-	let token = JSON.stringify(req.body.token);
+	let email = req.body.email;
+	let token = req.body.token;
 	try {
 		const result = await businessLogic.verifySubscriber(email, token);
-		res.send(result.responseBody);
 		res.status(result.status);
+		res.send(result.responseBody);
 	} catch (error) {
-		res.send(error);
 		res.status(error.status);
+		res.send(error);
 	}
 });

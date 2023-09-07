@@ -21,7 +21,7 @@ const businessLogic = require("./modules/businessLogic");
 
 (async () => {
 	try {
-		const result = await businessLogic.subscribeUser("");
+		const result = await businessLogic.verifySubscriber("", "");
 	} catch (error) {
 		console.log("Error", error);
 	}

@@ -1,8 +1,8 @@
 require("dotenv").config();
 const axios = require("axios");
+const utilities = require("./utilities");
 
 const apiCall = async (method, url, data) => {
-	console.log("step1");
 	let config = {
 		method: method,
 		maxBodyLength: Infinity,
@@ -13,24 +13,13 @@ const apiCall = async (method, url, data) => {
 		},
 		data: data,
 	};
-	console.log("step2");
 	return axios
 		.request(config)
 		.then((response) => {
-			console.log(JSON.stringify(response.data));
-			console.log(response.status);
-			return {
-				responseBody: response.data,
-				status: response.status,
-			};
+			return utilities.jsonResponse(response.data, response.status);
 		})
 		.catch((error) => {
-			console.log(error);
-			console.log(error.status);
-			return {
-				responseBody: error,
-				status: error.status,
-			};
+			return utilities.jsonResponse(error, error.response.status);
 		});
 };
 
