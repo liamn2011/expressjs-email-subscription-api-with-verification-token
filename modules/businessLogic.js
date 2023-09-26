@@ -31,6 +31,7 @@ const createUser = async (email) => {
 	const verification_token = utilities.uuidv4();
 	try {
 		const result = await shopifyApi.addCustomers(verification_token, email);
+		await sendEmail("subscribeUser", email, verification_token);
 		return result;
 	} catch (error) {
 		console.error("An error occurred:", error);
@@ -60,6 +61,7 @@ exports.verifySubscriber = async (email, token) => {
 		}
 		if (customersArray.tags == token && customersArray.email == email) {
 			const updateResult = await shopifyApi.updateCustomers(result.responseBody.customers[0].id);
+			await sendEmail("verifySubscriber", email, "");
 			return utilities.jsonResponse(
 				{ success: true, message: "Hello and Thank you for verifying your email address. You'll be redirected shortly", redirect: "/subscribed" },
 				200
@@ -94,3 +96,29 @@ exports.verifySubscriber = async (email, token) => {
 ======== Resubscribe (maybe deleted the original verification email) ===========
 ================================================================================
 */
+
+/*
+================================================================================
+============================= Send Email Function ==============================
+================================================================================
+*/
+
+const sendEmail = async (type, to, token) => {
+	switch (type) {
+		case "subscribeUser":
+			utilities.emailSend(
+				to,
+				"Verify your email address",
+				`<div><h1>${to}</h1><h2>${token}</h2>
+				<a href="http://localhost:8000/verify?email=${to}&token=${token}">ClickMe</a>
+			</div>`
+			);
+			break;
+		case "verifySubscriber":
+			utilities.emailSend(to, "Thank you for verifying", `<h1>Welcome to Muttlife</h1>`);
+			break;
+		default:
+			console.log("not worked");
+			break;
+	}
+};

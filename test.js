@@ -1,27 +1,9 @@
-const shopifyApi = require("./modules/shopifyApi");
-const businessLogic = require("./modules/businessLogic");
-
-// (async () => {
-// 	try {
-// 		const result = await shopifyApi.getCustomers("");
-// 		console.log("Success", result);
-// 	} catch (error) {
-// 		console.log("Error", error);
-// 	}
-// })();
-
-// (async () => {
-// 	try {
-// 		const result = await shopifyApi.updateCustomers();
-// 		console.log("Success", result);
-// 	} catch (error) {
-// 		console.log("Error", error);
-// 	}
-// })();
+require("dotenv").config();
+const utilities = require("./modules/utilities");
 
 (async () => {
 	try {
-		const result = await businessLogic.verifySubscriber("", "");
+		const result = await utilities.emailSend("", "<b>Hello world? sdcsdcsdsd</b>");
 	} catch (error) {
 		console.log("Error", error);
 	}
