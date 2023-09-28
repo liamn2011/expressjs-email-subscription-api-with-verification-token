@@ -109,13 +109,216 @@ const sendEmail = async (type, to, token) => {
 			utilities.emailSend(
 				to,
 				"Verify your email address",
-				`<div><h1>${to}</h1><h2>${token}</h2>
-				<a href="http://localhost:8000/verify?email=${to}&token=${token}">ClickMe</a>
-			</div>`
+				`
+				<!DOCTYPE html>
+				<html lang="en">
+					<head>
+						<meta charset="UTF-8" />
+						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+						<title>Document</title>
+						<style>
+							* {
+								margin: 0;
+							}
+							body {
+								display: flex;
+								justify-content: center;
+								width: 100%;
+							}
+							p {
+								margin: 30px;
+							}
+							.container {
+								width: 50rem;
+								margin: 0 2rem;
+							}
+							table {
+								width: 100%;
+							}
+				
+							.td2 {
+								text-align: right;
+							}
+							.logo {
+								background-color: blueviolet;
+								padding: 30px;
+								display: flex;
+								justify-content: center;
+								margin-bottom: 20px;
+							}
+							.logo img {
+								width: 400px;
+							}
+							.body {
+								margin-bottom: 20px;
+							}
+							.footer {
+								border-top: solid black 1px;
+								padding-top: 30px;
+								display: flex;
+								justify-content: space-between;
+							}
+							.link {
+								color: #0000ee;
+							}
+							.verify-container {
+								text-align: center;
+							}
+							@media screen and (max-width: 480px) {
+								p {
+									font-size: xx-large;
+								}
+								td {
+									font-size: x-large;
+								}
+								.td2 {
+									text-align: center;
+								}
+								.td1 {
+									text-align: center;
+								}
+							}
+						</style>
+					</head>
+					<body>
+						<div class="container">
+							<div class="logo">
+								<img src="./logo.png" />
+							</div>
+							<div class="body">
+								<p>Hey ${to}!</p>
+								<p>You are one step of a way from being a fully fledged MUTTLIFER..... We just need you to verify your email address.</p>
+								<p>Please click the link below to verify. Catch you in the MUTTLIFER club!</p>
+								<div class="verify-container">
+									<p>
+										<strong><a class="link" href="http://localhost:8000/verify?email=${to}&token=${token}">Click Here To Verify</a></strong>
+									</p>
+								</div>
+							</div>
+							<div class="footer">
+								<table>
+									<tr>
+										<td class="td1"><a class="link" href="/">Unsubscribe</a></td>
+										<td class="td2"><span>&copy;2023 MUTTLIFE</span></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</body>
+				</html>
+				`
 			);
 			break;
 		case "verifySubscriber":
-			utilities.emailSend(to, "Thank you for verifying", `<h1>Welcome to Muttlife</h1>`);
+			utilities.emailSend(
+				to,
+				"Thank you for verifying",
+				`
+				<!DOCTYPE html>
+				<html lang="en">
+					<head>
+						<meta charset="UTF-8" />
+						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+						<title>Document</title>
+						<style>
+							* {
+								margin: 0;
+							}
+							body {
+								width: 100%;
+							}
+							p {
+								margin: 30px;
+							}
+							.container {
+								max-width: 50em;
+							}
+							table {
+								width: 100%;
+							}
+				
+							.td2 {
+								text-align: right;
+							}
+							.logo {
+								background-color: blueviolet;
+								padding: 30px;
+								margin-bottom: 20px;
+							}
+							.logo img {
+								width: 400px;
+							}
+							.body {
+								margin-bottom: 20px;
+							}
+							.footer {
+								border-top: solid black 1px;
+								padding-top: 30px;
+							}
+							.link {
+								color: #0000ee;
+							}
+							.verify-container {
+								text-align: center;
+							}
+							@media screen and (max-width: 500px) {
+								p,
+								li {
+									font-size: 30px;
+								}
+							}
+						</style>
+					</head>
+					<body>
+						<table>
+							<tr align="center">
+								<td>
+									<div class="container">
+										<div class="logo">
+											<img src="./logo.png" />
+										</div>
+										<table>
+											<tr align="center">
+												<table>
+													<tbody>
+														<tr>
+															<td>
+																<div class="body">
+																	<p>Hey ${to}!</p>
+																	<p>Welcome MUTTLIFER to the PACK! We are so happy to see you join</p>
+																	<p>As a MUTTLIFE member, we'll provide with all the updates, new releases and spetacular events. This includes:</p>
+																	<ul>
+																		<li>Providing you with updates to our online shop development & the all exciting launch date</li>
+																		<li>A sneak peak to our new clothing collection and brand new items</li>
+																		<li>The list goes on........</li>
+																	</ul>
+																	<p>Keep mentally healthy, musically in-tuned, and animal loving</p>
+																	<p>Sincerely, The MUTTLIFE Team</p>
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<table class="footer">
+																	<tr>
+																		<td class="td1"><a class="link" href="/">Unsubscribe</a></td>
+																		<td class="td2"><span>&copy;2023 MUTTLIFE</span></td>
+																	</tr>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</tr>
+										</table>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</body>
+				</html>
+				`
+			);
 			break;
 		default:
 			console.log("not worked");

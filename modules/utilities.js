@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 exports.emailSend = async (to, subject, html) => {
 	// send mail with defined transport object
 	const info = await transporter.sendMail({
-		from: "", // sender address
+		from: "customerservices@muttlife.co.uk", // sender address
 		to: to, // list of receivers
 		subject: subject, // Subject line
 		//text: "Hello world?", // plain text body
