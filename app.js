@@ -101,3 +101,15 @@ app.post("/api/verify", validateToken, async (req, res) => {
 		res.send(error);
 	}
 });
+
+app.post("/api/unsubscribe", validateToken, async (req, res) => {
+	try {
+		let email = req.body.email;
+		const result = await businessLogic.unsubscribeUser(email);
+		res.status(result.status);
+		res.send(result.responseBody);
+	} catch (error) {
+		res.status(error.status);
+		res.send(error);
+	}
+});

@@ -29,13 +29,18 @@ exports.getCustomers = async (email) => {
 	return result;
 };
 
-exports.updateCustomers = async (customerId) => {
+exports.updateCustomers = async (customerId, tags) => {
 	console.log("updateCustomers");
+	let state = tags == "Verified" ? "subscribed" : "unsubscribed";
 	let data = JSON.stringify({
 		customer: {
 			id: customerId,
-			tags: "Verified",
+			tags: tags,
 			first_name: null,
+			email_marketing_consent: {
+				state: state,
+				opt_in_level: "confirmed_opt_in",
+			},
 		},
 	});
 	const result = await apiCall("PUT", "https://muttlifemcr.myshopify.com/admin/api/2023-04/customers/" + customerId + ".json", data);
@@ -48,10 +53,11 @@ exports.addCustomers = async (verification_token, email) => {
 		customer: {
 			first_name: verification_token,
 			email: email,
-			verified_email: true,
-			send_email_welcome: true,
 			tags: verification_token,
-			accepts_marketing: true,
+			email_marketing_consent: {
+				state: "unsubscribed",
+				opt_in_level: "confirmed_opt_in",
+			},
 		},
 	});
 	const result = await apiCall("POST", "https://muttlifemcr.myshopify.com/admin/api/2023-04/customers.json", data);

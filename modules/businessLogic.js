@@ -60,7 +60,7 @@ exports.verifySubscriber = async (email, token) => {
 			); //No customer found with this email.
 		}
 		if (customersArray.tags == token && customersArray.email == email) {
-			const updateResult = await shopifyApi.updateCustomers(result.responseBody.customers[0].id);
+			const updateResult = await shopifyApi.updateCustomers(result.responseBody.customers[0].id, "Verified");
 			await sendEmail("verifySubscriber", email, "");
 			return utilities.jsonResponse(
 				{ success: true, message: "Hello and Thank you for verifying your email address. You'll be redirected shortly", redirect: "/subscribed" },
@@ -89,6 +89,26 @@ exports.verifySubscriber = async (email, token) => {
 	} catch (error) {
 		console.error("An error occurred:", error);
 	}
+};
+
+exports.unsubscribeUser = async (email) => {
+	try {
+		const result = await shopifyApi.getCustomers(email);
+		const customersArray = result.responseBody.customers[0];
+		if (!customersArray) {
+			return utilities.jsonResponse(
+				{
+					success: false,
+					message: "Unfortunately, we cannot find a subscriber with this email address. We'll redirect to the muttlife.co.uk web page to subscribe.",
+					redirect: "/",
+				},
+				200
+			); //No customer found with this email.
+		} else {
+			const updateResult = await shopifyApi.updateCustomers(result.responseBody.customers[0].id, "unsubscribed");
+			return utilities.jsonResponse({ success: true, message: "unsubscribed", redirect: "/" }, 200);
+		}
+	} catch (error) {}
 };
 
 /*
@@ -121,16 +141,19 @@ const sendEmail = async (type, to, token) => {
 								margin: 0;
 							}
 							body {
-								display: flex;
-								justify-content: center;
 								width: 100%;
+								font-size: 16px;
+								font-family: "Roboto", sans-serif;
+							}
+							.body-td {
+								font-size: 16px;
+								font-family: "Roboto", sans-serif;
 							}
 							p {
 								margin: 30px;
 							}
 							.container {
-								width: 50rem;
-								margin: 0 2rem;
+								max-width: 50em;
 							}
 							table {
 								width: 100%;
@@ -140,10 +163,8 @@ const sendEmail = async (type, to, token) => {
 								text-align: right;
 							}
 							.logo {
-								background-color: blueviolet;
+								background-color: black;
 								padding: 30px;
-								display: flex;
-								justify-content: center;
 								margin-bottom: 20px;
 							}
 							.logo img {
@@ -155,8 +176,6 @@ const sendEmail = async (type, to, token) => {
 							.footer {
 								border-top: solid black 1px;
 								padding-top: 30px;
-								display: flex;
-								justify-content: space-between;
 							}
 							.link {
 								color: #0000ee;
@@ -164,46 +183,58 @@ const sendEmail = async (type, to, token) => {
 							.verify-container {
 								text-align: center;
 							}
-							@media screen and (max-width: 480px) {
-								p {
-									font-size: xx-large;
-								}
-								td {
-									font-size: x-large;
-								}
-								.td2 {
-									text-align: center;
-								}
-								.td1 {
-									text-align: center;
+							@media screen and (max-width: 598px) {
+								p,
+								li {
+									font-size: 30px;
 								}
 							}
 						</style>
 					</head>
 					<body>
-						<div class="container">
-							<div class="logo">
-								<img src="./logo.png" />
-							</div>
-							<div class="body">
-								<p>Hey ${to}!</p>
-								<p>You are one step of a way from being a fully fledged MUTTLIFER..... We just need you to verify your email address.</p>
-								<p>Please click the link below to verify. Catch you in the MUTTLIFER club!</p>
-								<div class="verify-container">
-									<p>
-										<strong><a class="link" href="http://localhost:8000/verify?email=${to}&token=${token}">Click Here To Verify</a></strong>
-									</p>
-								</div>
-							</div>
-							<div class="footer">
-								<table>
-									<tr>
-										<td class="td1"><a class="link" href="/">Unsubscribe</a></td>
-										<td class="td2"><span>&copy;2023 MUTTLIFE</span></td>
-									</tr>
-								</table>
-							</div>
-						</div>
+						<table>
+							<tr align="center">
+								<td>
+									<div class="container">
+										<div class="logo">
+											<img src="./logo.png" />
+										</div>
+										<table>
+											<tr align="center">
+												<table>
+													<tbody>
+														<tr>
+															<td class="body-td">
+																<div class="body">
+																	<p>Hey ${to}!</p>
+																	<p>You are one step of a way from being a fully fledged MUTTLIFER..... We just need you to verify your email address.</p>
+																	<p>Please click the link below to verify. Catch you in the MUTTLIFER club!</p>
+																	<div class="verify-container">
+																		<p>
+																			<strong><a class="link" href="http://localhost:8000/verify?email=${to}&token=${token}">Click Here To Verify</a></strong>
+																		</p>
+																	</div>
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<table class="footer">
+																	<tr>
+																		<td class="td1"><a class="link" href="http://localhost:8000/unsubscribe?email=${to}">Unsubscribe</a></td>
+																		<td class="td2"><span>&copy;2023 MUTTLIFE</span></td>
+																	</tr>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</tr>
+										</table>
+									</div>
+								</td>
+							</tr>
+						</table>
 					</body>
 				</html>
 				`
@@ -301,7 +332,7 @@ const sendEmail = async (type, to, token) => {
 															<td>
 																<table class="footer">
 																	<tr>
-																		<td class="td1"><a class="link" href="/">Unsubscribe</a></td>
+																		<td class="td1"><a class="link" href="http://localhost:8000/unsubscribe?email=${to}">Unsubscribe</a></td>
 																		<td class="td2"><span>&copy;2023 MUTTLIFE</span></td>
 																	</tr>
 																</table>
