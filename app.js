@@ -6,13 +6,14 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const rateLimit = require("express-rate-limit");
 const businessLogic = require("./modules/businessLogic");
+const util = require("./modules/utilities");
 const app = express();
 const PORT = 3000;
 
 // Secret key for JWT & Whitelisted Domains & JWT Expiry
 const JWT_SECRET = process.env.JWT_SECRET_KEY;
 const whitelist = ["http://example.com", "http://yourdomain.com", "http://localhost:8000", "http://www.localhost:8000", "http://www.localhost:9000"];
-const expiresIn = "10s"; // Set an expiration time for the token (e.g., 1 hour)
+const expiresIn = "30s"; // Set an expiration time for the token (e.g., 1 hour)
 
 // Configure CORS options
 const corsOptions = {
@@ -67,6 +68,16 @@ app.use("/api/verify", cors(corsOptions));
 //Endpoint to generate JWT Token
 app.post("/api/auth", (req, res) => {
 	const { apiKey } = req.body;
+	const allowedProperties = ["apiKey"];
+
+	// Check for additional properties in the request body
+	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property));
+
+	if (additionalProperties.length > 0) {
+		res.setHeader("Content-Type", "application/json");
+		res.status(400).json({ error: `Invalid properties: ${additionalProperties.join(", ")}` });
+		return;
+	}
 
 	// You can validate the API key against your database or list of authorized keys here
 	if (apiKey === process.env.API_KEY) {
@@ -81,12 +92,28 @@ app.post("/api/auth", (req, res) => {
 
 // Shopify API Call
 app.post("/api/subscribe", validateToken, async (req, res) => {
-	try {
-		let email = req.body.email;
-		const result = await businessLogic.subscribeUser(email);
+	let email = req.body.email;
+
+	const allowedProperties = ["email"];
+
+	// Check for additional properties in the request body
+	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property));
+
+	if (additionalProperties.length > 0) {
 		res.setHeader("Content-Type", "application/json");
-		res.status(result.status);
-		res.json(result.responseBody);
+		res.status(400).json({ error: `Invalid properties: ${additionalProperties.join(", ")}` });
+		return;
+	}
+	try {
+		if (util.emailValidation(email)) {
+			const result = await businessLogic.subscribeUser(email);
+			res.setHeader("Content-Type", "application/json");
+			res.status(result.status);
+			res.json(result.responseBody);
+		} else {
+			res.setHeader("Content-Type", "application/json");
+			res.status(200).json({ error: "Invalid Email Address" });
+		}
 	} catch (error) {
 		res.setHeader("Content-Type", "application/json");
 		res.status(error.status);
@@ -97,11 +124,26 @@ app.post("/api/subscribe", validateToken, async (req, res) => {
 app.post("/api/verify", validateToken, async (req, res) => {
 	let email = req.body.email;
 	let token = req.body.token;
-	try {
-		const result = await businessLogic.verifySubscriber(email, token);
+	const allowedProperties = ["email", "token"];
+
+	// Check for additional properties in the request body
+	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property));
+
+	if (additionalProperties.length > 0) {
 		res.setHeader("Content-Type", "application/json");
-		res.status(result.status);
-		res.json(result.responseBody);
+		res.status(400).json({ error: `Invalid properties: ${additionalProperties.join(", ")}` });
+		return;
+	}
+	try {
+		if (util.emailValidation(email) && util.UUIDValidation(token)) {
+			const result = await businessLogic.verifySubscriber(email, token);
+			res.setHeader("Content-Type", "application/json");
+			res.status(result.status);
+			res.json(result.responseBody);
+		} else {
+			res.setHeader("Content-Type", "application/json");
+			res.status(200).json({ error: "Validation Error" });
+		}
 	} catch (error) {
 		res.setHeader("Content-Type", "application/json");
 		res.status(error.status);
@@ -110,12 +152,26 @@ app.post("/api/verify", validateToken, async (req, res) => {
 });
 
 app.post("/api/unsubscribe", validateToken, async (req, res) => {
-	try {
-		let email = req.body.email;
-		const result = await businessLogic.unsubscribeUser(email);
+	let email = req.body.email;
+	const allowedProperties = ["email"];
+	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property));
+
+	if (additionalProperties.length > 0) {
 		res.setHeader("Content-Type", "application/json");
-		res.status(result.status);
-		res.json(result.responseBody);
+		res.status(400).json({ error: `Invalid properties: ${additionalProperties.join(", ")}` });
+		return;
+	}
+
+	try {
+		if (util.emailValidation(email)) {
+			const result = await businessLogic.unsubscribeUser(email);
+			res.setHeader("Content-Type", "application/json");
+			res.status(result.status);
+			res.json(result.responseBody);
+		} else {
+			res.setHeader("Content-Type", "application/json");
+			res.status(200).json({ error: "Validation Error" });
+		}
 	} catch (error) {
 		res.setHeader("Content-Type", "application/json");
 		res.status(error.status);

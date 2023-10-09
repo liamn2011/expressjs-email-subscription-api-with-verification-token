@@ -45,3 +45,13 @@ exports.uuidv4 = () => {
 		return v.toString(16);
 	});
 };
+
+exports.emailValidation = (email) => {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+};
+
+exports.UUIDValidation = (token) => {
+	const tokenRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
+	return tokenRegex.test(token);
+};
