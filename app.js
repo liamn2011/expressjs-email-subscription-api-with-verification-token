@@ -1,6 +1,7 @@
 // Importing Modules
 require("dotenv").config();
 const helmet = require("helmet");
+const sanitizeHtml = require("sanitize-html");
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -105,8 +106,9 @@ app.post("/api/subscribe", validateToken, async (req, res) => {
 		return;
 	}
 	try {
-		if (util.emailValidation(email)) {
-			const result = await businessLogic.subscribeUser(email);
+		const sanitizedEmail = sanitizeHtml(email);
+		if (util.emailValidation(sanitizedEmail)) {
+			const result = await businessLogic.subscribeUser(sanitizedEmail);
 			res.setHeader("Content-Type", "application/json");
 			res.status(result.status);
 			res.json(result.responseBody);
@@ -135,8 +137,10 @@ app.post("/api/verify", validateToken, async (req, res) => {
 		return;
 	}
 	try {
-		if (util.emailValidation(email) && util.UUIDValidation(token)) {
-			const result = await businessLogic.verifySubscriber(email, token);
+		const sanitizedEmail = sanitizeHtml(email);
+		const sanitizedToken = sanitizeHtml(token);
+		if (util.emailValidation(sanitizedEmail) && util.UUIDValidation(sanitizedToken)) {
+			const result = await businessLogic.verifySubscriber(sanitizedEmail, sanitizedToken);
 			res.setHeader("Content-Type", "application/json");
 			res.status(result.status);
 			res.json(result.responseBody);
@@ -163,8 +167,9 @@ app.post("/api/unsubscribe", validateToken, async (req, res) => {
 	}
 
 	try {
-		if (util.emailValidation(email)) {
-			const result = await businessLogic.unsubscribeUser(email);
+		const sanitizedEmail = sanitizeHtml(email);
+		if (util.emailValidation(sanitizedEmail)) {
+			const result = await businessLogic.unsubscribeUser(sanitizedEmail);
 			res.setHeader("Content-Type", "application/json");
 			res.status(result.status);
 			res.json(result.responseBody);
