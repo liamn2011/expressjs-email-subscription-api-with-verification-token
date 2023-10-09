@@ -1,5 +1,6 @@
 // Importing Modules
 require("dotenv").config();
+const helmet = require("helmet");
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -70,8 +71,10 @@ app.post("/api/auth", (req, res) => {
 	// You can validate the API key against your database or list of authorized keys here
 	if (apiKey === process.env.API_KEY) {
 		const token = jwt.sign({ apiKey }, JWT_SECRET, { expiresIn });
+		res.setHeader("Content-Type", "application/json");
 		res.json({ token });
 	} else {
+		res.setHeader("Content-Type", "application/json");
 		res.status(401).json({ error: "Unauthorized" });
 	}
 });
@@ -81,11 +84,13 @@ app.post("/api/subscribe", validateToken, async (req, res) => {
 	try {
 		let email = req.body.email;
 		const result = await businessLogic.subscribeUser(email);
+		res.setHeader("Content-Type", "application/json");
 		res.status(result.status);
-		res.send(result.responseBody);
+		res.json(result.responseBody);
 	} catch (error) {
+		res.setHeader("Content-Type", "application/json");
 		res.status(error.status);
-		res.send(error);
+		res.json(error);
 	}
 });
 
@@ -94,11 +99,13 @@ app.post("/api/verify", validateToken, async (req, res) => {
 	let token = req.body.token;
 	try {
 		const result = await businessLogic.verifySubscriber(email, token);
+		res.setHeader("Content-Type", "application/json");
 		res.status(result.status);
-		res.send(result.responseBody);
+		res.json(result.responseBody);
 	} catch (error) {
+		res.setHeader("Content-Type", "application/json");
 		res.status(error.status);
-		res.send(error);
+		res.json(error);
 	}
 });
 
@@ -106,10 +113,12 @@ app.post("/api/unsubscribe", validateToken, async (req, res) => {
 	try {
 		let email = req.body.email;
 		const result = await businessLogic.unsubscribeUser(email);
+		res.setHeader("Content-Type", "application/json");
 		res.status(result.status);
-		res.send(result.responseBody);
+		res.json(result.responseBody);
 	} catch (error) {
+		res.setHeader("Content-Type", "application/json");
 		res.status(error.status);
-		res.send(error);
+		res.json(error);
 	}
 });
