@@ -1,5 +1,6 @@
 const shopifyApi = require("./shopifyApi");
 const utilities = require("./utilities");
+const he = require("he");
 
 /*
 ================================================================================
@@ -136,10 +137,12 @@ exports.unsubscribeUser = async (email) => {
 */
 
 const sendEmail = async (type, to, token) => {
+	const sanitizedTo = he.encode(to);
+	const sanitizedToken = he.encode(token);
 	switch (type) {
 		case "subscribeUser":
 			utilities.emailSend(
-				to,
+				sanitizedTo,
 				"Verify your email address",
 				`
 				<!DOCTYPE html>
@@ -229,7 +232,7 @@ const sendEmail = async (type, to, token) => {
 														<tr>
 															<td class="body-td">
 																<div class="body">
-																	<p>Hey ${to}!</p>
+																	<p>Hey ${sanitizedTo}!</p>
 																	<p>
 																		You are one step of a way from being a member of the MUTTLIFE pack..... We just need you to verify your email address
 																		before you become a MUTTLIFER.
@@ -237,7 +240,7 @@ const sendEmail = async (type, to, token) => {
 																	<p>Please click the link below to verify your email. See you in the MUTTLIFE pack!</p>
 																	<div class="verify-container">
 																		<p>
-																			<strong><a class="link" href="http://localhost:8000/verify?email=${to}&token=${token}">Click Here To Verify</a></strong>
+																			<strong><a class="link" href="http://localhost:8000/verify?email=${sanitizedTo}&token=${sanitizedToken}">Click Here To Verify</a></strong>
 																		</p>
 																	</div>
 																	<div class="social-icons">
@@ -252,7 +255,7 @@ const sendEmail = async (type, to, token) => {
 															<td>
 																<table class="footer">
 																	<tr>
-																		<td class="td1"><a class="link" href="http://localhost:8000/unsubscribe?email=${to}">Unsubscribe</a></td>
+																		<td class="td1"><a class="link" href="http://localhost:8000/unsubscribe?email=${sanitizedTo}">Unsubscribe</a></td>
 																		<td class="td2"><span>&copy;2023 MUTTLIFE</span></td>
 																	</tr>
 																</table>
@@ -273,7 +276,7 @@ const sendEmail = async (type, to, token) => {
 			break;
 		case "verifySubscriber":
 			utilities.emailSend(
-				to,
+				sanitizedTo,
 				"Thank you for verifying",
 				`
 				<!DOCTYPE html>
@@ -362,7 +365,7 @@ const sendEmail = async (type, to, token) => {
 														<tr>
 															<td class="body-td">
 																<div class="body">
-																	<p>Hey ${to}!</p>
+																	<p>Hey ${sanitizedTo}!</p>
 																	<p>Welcome MUTTLIFER to the PACK! We are so happy to see you join</p>
 																	<p>As a MUTTLIFE member, we'll provide with all the updates, new releases and spetacular events. This includes:</p>
 																	<ul>
@@ -384,7 +387,7 @@ const sendEmail = async (type, to, token) => {
 															<td>
 																<table class="footer">
 																	<tr>
-																		<td class="td1"><a class="link" href="http://localhost:8000/unsubscribe?email=${to}">Unsubscribe</a></td>
+																		<td class="td1"><a class="link" href="http://localhost:8000/unsubscribe?email=${sanitizedTo}">Unsubscribe</a></td>
 																		<td class="td2"><span>&copy;2023 MUTTLIFE</span></td>
 																	</tr>
 																</table>
