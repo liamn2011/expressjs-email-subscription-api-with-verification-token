@@ -292,7 +292,7 @@ const sendEmail = async (type, to, token) => {
 							body {
 								width: 100%;
 								font-size: 16px;
-								font-family: "Roboto";
+								font-family: "Roboto", sans-serif;
 							}
 							.body-td,
 							.footer {
@@ -313,7 +313,7 @@ const sendEmail = async (type, to, token) => {
 								text-align: right;
 							}
 							.logo {
-								background-color: black;
+								background-color: rgb(190, 115, 168);
 								padding: 30px;
 								margin-bottom: 20px;
 							}
@@ -324,7 +324,7 @@ const sendEmail = async (type, to, token) => {
 								margin-bottom: 20px;
 							}
 							.footer {
-								border-top: solid black 1px;
+								border-top: solid rgb(74, 70, 70) 1px;
 								padding-top: 30px;
 							}
 							.link {
@@ -336,6 +336,7 @@ const sendEmail = async (type, to, token) => {
 							.social-icons {
 								text-align: center;
 							}
+				
 							.instagram,
 							.tiktok {
 								width: 30px;
@@ -366,19 +367,29 @@ const sendEmail = async (type, to, token) => {
 															<td class="body-td">
 																<div class="body">
 																	<p>Hey ${sanitizedTo}!</p>
-																	<p>Welcome MUTTLIFER to the PACK! We are so happy to see you join</p>
-																	<p>As a MUTTLIFE member, we'll provide with all the updates, new releases and spetacular events. This includes:</p>
+																	<p>Welcome to the PACK MUTTLIFER! We're absolutely thrilled to have you join our vibrant community.</p>
+																	<p>
+																		As a cherished member of MUTTLIFE, we'll provide with all the updates, new releases and spetacular events. Here's a
+																		glimpse of what's coming your way:
+																	</p>
 																	<ul>
-																		<li>Providing you with updates to our online shop development & the all exciting launch date</li>
-																		<li>A sneak peak to our new clothing collection and brand new items</li>
-																		<li>The list goes on........</li>
+																		<li>
+																			Stay tuned for exciting updates on the development of our online shop, and mark your calendar for the grand launch –
+																			it's going to be awesome!
+																		</li>
+																		<li>Sneak a peek at our upcoming clothing collection, featuring brand new items that are bound to make a statement.</li>
+																		<li>And much more!</li>
 																	</ul>
-																	<p>Keep mentally healthy, musically in-tuned, and animal loving</p>
-																	<p>Sincerely, The MUTTLIFE Team</p>
+																	<p>Stay mentally healthy, musically in-tuned, and keep spreading the love for animals.</p>
+																	<p>Sincerely, <br /><br />The MUTTLIFE Team 🐾</p>
 																	<div class="social-icons">
 																		<p style="margin-bottom: 10px">Follow us on:</p>
-																		<i class=""><img class="tiktok" src="https://muttlifeemailimages.s3.eu-west-1.amazonaws.com/tiktokIcon.png" /></i>
-																		<i class=""><img class="instagram" src="https://muttlifeemailimages.s3.eu-west-1.amazonaws.com/instagramIcon.png" /></i>
+																		<a href="https://www.tiktok.com/"
+																			><img class="tiktok" src="https://muttlifeemailimages.s3.eu-west-1.amazonaws.com/tiktokIcon.png"
+																		/></a>
+																		<a href="https://www.instagram.com/"
+																			><img class="instagram" src="https://muttlifeemailimages.s3.eu-west-1.amazonaws.com/instagramIcon.png"
+																		/></a>
 																	</div>
 																</div>
 															</td>
@@ -402,7 +413,7 @@ const sendEmail = async (type, to, token) => {
 							</tr>
 						</table>
 					</body>
-				</html>				
+				</html>										
 				`
 			);
 			break;
