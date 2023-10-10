@@ -115,7 +115,8 @@ exports.unsubscribeUser = async (email) => {
 				200
 			); //No customer found with this email.
 		} else {
-			const updateResult = await shopifyApi.updateCustomers(result.responseBody.customers[0].id, "unsubscribed");
+			// const updateResult = await shopifyApi.updateCustomers(result.responseBody.customers[0].id, "unsubscribed");
+			await shopifyApi.deleteCustomers(result.responseBody.customers[0].id);
 			return utilities.jsonResponse(
 				{
 					success: true,
@@ -127,12 +128,6 @@ exports.unsubscribeUser = async (email) => {
 		}
 	} catch (error) {}
 };
-
-/*
-================================================================================
-======== Resubscribe (maybe deleted the original verification email) ===========
-================================================================================
-*/
 
 /*
 ================================================================================

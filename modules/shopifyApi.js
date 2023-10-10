@@ -63,3 +63,9 @@ exports.addCustomers = async (verification_token, email) => {
 	const result = await apiCall("POST", "https://muttlifemcr.myshopify.com/admin/api/2023-04/customers.json", data);
 	return result;
 };
+
+exports.deleteCustomers = async (customerId) => {
+	console.log("deleteCustomers");
+	const result = await apiCall("DELETE", "https://muttlifemcr.myshopify.com/admin/api/2023-04/customers/" + customerId + ".json");
+	return result;
+};

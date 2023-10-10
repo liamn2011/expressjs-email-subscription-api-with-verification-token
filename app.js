@@ -69,10 +69,9 @@ app.use("/api/verify", cors(corsOptions));
 //Endpoint to generate JWT Token
 app.post("/api/auth", (req, res) => {
 	const { apiKey } = req.body;
+	const sanitizedApiKey = sanitizeHtml(apiKey, req.body);
 	const allowedProperties = ["apiKey"];
-
-	// Check for additional properties in the request body
-	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property));
+	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property)); // Check for additional properties in the request body
 
 	if (additionalProperties.length > 0) {
 		res.setHeader("Content-Type", "application/json");
@@ -81,8 +80,8 @@ app.post("/api/auth", (req, res) => {
 	}
 
 	// You can validate the API key against your database or list of authorized keys here
-	if (apiKey === process.env.API_KEY) {
-		const token = jwt.sign({ apiKey }, JWT_SECRET, { expiresIn });
+	if (sanitizedApiKey === process.env.API_KEY) {
+		const token = jwt.sign({ sanitizedApiKey }, JWT_SECRET, { expiresIn });
 		res.setHeader("Content-Type", "application/json");
 		res.json({ token });
 	} else {
@@ -94,19 +93,17 @@ app.post("/api/auth", (req, res) => {
 // Shopify API Call
 app.post("/api/subscribe", validateToken, async (req, res) => {
 	let email = req.body.email;
-
+	const sanitizedEmail = sanitizeHtml(email);
 	const allowedProperties = ["email"];
-
-	// Check for additional properties in the request body
-	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property));
+	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property)); // Check for additional properties in the request body
 
 	if (additionalProperties.length > 0) {
 		res.setHeader("Content-Type", "application/json");
 		res.status(400).json({ error: `Invalid properties: ${additionalProperties.join(", ")}` });
 		return;
 	}
+
 	try {
-		const sanitizedEmail = sanitizeHtml(email);
 		if (util.emailValidation(sanitizedEmail)) {
 			const result = await businessLogic.subscribeUser(sanitizedEmail);
 			res.setHeader("Content-Type", "application/json");
@@ -126,19 +123,18 @@ app.post("/api/subscribe", validateToken, async (req, res) => {
 app.post("/api/verify", validateToken, async (req, res) => {
 	let email = req.body.email;
 	let token = req.body.token;
+	const sanitizedEmail = sanitizeHtml(email);
+	const sanitizedToken = sanitizeHtml(token);
 	const allowedProperties = ["email", "token"];
-
-	// Check for additional properties in the request body
-	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property));
+	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property)); // Check for additional properties in the request body
 
 	if (additionalProperties.length > 0) {
 		res.setHeader("Content-Type", "application/json");
 		res.status(400).json({ error: `Invalid properties: ${additionalProperties.join(", ")}` });
 		return;
 	}
+
 	try {
-		const sanitizedEmail = sanitizeHtml(email);
-		const sanitizedToken = sanitizeHtml(token);
 		if (util.emailValidation(sanitizedEmail) && util.UUIDValidation(sanitizedToken)) {
 			const result = await businessLogic.verifySubscriber(sanitizedEmail, sanitizedToken);
 			res.setHeader("Content-Type", "application/json");
@@ -157,6 +153,7 @@ app.post("/api/verify", validateToken, async (req, res) => {
 
 app.post("/api/unsubscribe", validateToken, async (req, res) => {
 	let email = req.body.email;
+	const sanitizedEmail = sanitizeHtml(email);
 	const allowedProperties = ["email"];
 	const additionalProperties = Object.keys(req.body).filter((property) => !allowedProperties.includes(property));
 
@@ -167,7 +164,6 @@ app.post("/api/unsubscribe", validateToken, async (req, res) => {
 	}
 
 	try {
-		const sanitizedEmail = sanitizeHtml(email);
 		if (util.emailValidation(sanitizedEmail)) {
 			const result = await businessLogic.unsubscribeUser(sanitizedEmail);
 			res.setHeader("Content-Type", "application/json");
