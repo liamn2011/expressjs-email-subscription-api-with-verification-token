@@ -179,7 +179,7 @@ const sendEmail = async (type, to, token) => {
 								text-align: right;
 							}
 							.logo {
-								background-color: rgb(190, 115, 168);
+								background-color: #ffd9e4;
 								padding: 30px;
 								margin-bottom: 20px;
 							}
@@ -232,7 +232,7 @@ const sendEmail = async (type, to, token) => {
 														<tr>
 															<td class="body-td">
 																<div class="body">
-																	<p>Hey ${sanitizedTo}!</p>
+																	<p>Hey ${to}!</p>
 																	<p>
 																		You are one step of a way from being a member of the MUTTLIFE pack..... We just need you to verify your email address
 																		before you become a MUTTLIFER.
@@ -240,13 +240,17 @@ const sendEmail = async (type, to, token) => {
 																	<p>Please click the link below to verify your email. See you in the MUTTLIFE pack!</p>
 																	<div class="verify-container">
 																		<p>
-																			<strong><a class="link" href="http://localhost:8000/verify?email=${sanitizedTo}&token=${sanitizedToken}">Click Here To Verify</a></strong>
+																			<strong><a class="link" href="http://localhost:8000/verify?email=${to}&token=${token}">Click Here To Verify</a></strong>
 																		</p>
 																	</div>
 																	<div class="social-icons">
 																		<p style="margin-bottom: 10px">Follow us on:</p>
-																		<i class=""><img class="tiktok" src="https://muttlifeemailimages.s3.eu-west-1.amazonaws.com/tiktokIcon.png" /></i>
-																		<i class=""><img class="instagram" src="https://muttlifeemailimages.s3.eu-west-1.amazonaws.com/instagramIcon.png" /></i>
+																		<a href="https://www.tiktok.com/"
+																			><img class="tiktok" src="https://muttlifeemailimages.s3.eu-west-1.amazonaws.com/tiktokIcon.png"
+																		/></a>
+																		<a href="https://www.instagram.com/"
+																			><img class="instagram" src="https://muttlifeemailimages.s3.eu-west-1.amazonaws.com/instagramIcon.png"
+																		/></a>
 																	</div>
 																</div>
 															</td>
@@ -255,7 +259,14 @@ const sendEmail = async (type, to, token) => {
 															<td>
 																<table class="footer">
 																	<tr>
-																		<td class="td1"><a class="link" href="http://localhost:8000/unsubscribe?email=${sanitizedTo}">Unsubscribe</a></td>
+																		<td class="td1">
+																			<a
+																				style="color: inherit; text-decoration: none"
+																				class="link"
+																				href="http://localhost:8000/unsubscribe?email=${sanitizedTo}"
+																				>Unsubscribe</a
+																			>
+																		</td>
 																		<td class="td2"><span>&copy;2023 MUTTLIFE</span></td>
 																	</tr>
 																</table>
@@ -270,7 +281,7 @@ const sendEmail = async (type, to, token) => {
 							</tr>
 						</table>
 					</body>
-				</html>								
+				</html>									
 				`
 			);
 			break;
@@ -313,7 +324,7 @@ const sendEmail = async (type, to, token) => {
 								text-align: right;
 							}
 							.logo {
-								background-color: rgb(190, 115, 168);
+								background-color: #ffd9e4 /*rgb(190, 115, 168)*/;
 								padding: 30px;
 								margin-bottom: 20px;
 							}
@@ -326,6 +337,7 @@ const sendEmail = async (type, to, token) => {
 							.footer {
 								border-top: solid rgb(74, 70, 70) 1px;
 								padding-top: 30px;
+								padding-bottom: 30px;
 							}
 							.link {
 								color: #0000ee;
@@ -341,6 +353,12 @@ const sendEmail = async (type, to, token) => {
 							.tiktok {
 								width: 30px;
 								margin: 0 10px 0 10px;
+							}
+				
+							.main-image {
+								display: block;
+								margin-left: auto;
+								margin-right: auto;
 							}
 							@media screen and (max-width: 598px) {
 								p,
@@ -382,6 +400,12 @@ const sendEmail = async (type, to, token) => {
 																	</ul>
 																	<p>Stay mentally healthy, musically in-tuned, and keep spreading the love for animals.</p>
 																	<p>Sincerely, <br /><br />The MUTTLIFE Team 🐾</p>
+				
+																	<a style="cursor: default" href="http://localhost:8000/"
+																		><img class="main-image" width="75%" src="https://muttlifeemailimages.s3.eu-west-1.amazonaws.com/Final5.jpg"
+																	/></a>
+																	<!-- <img class="main-image" width="600px" src="./Final.png" /> -->
+				
 																	<div class="social-icons">
 																		<p style="margin-bottom: 10px">Follow us on:</p>
 																		<a href="https://www.tiktok.com/"
@@ -398,7 +422,14 @@ const sendEmail = async (type, to, token) => {
 															<td>
 																<table class="footer">
 																	<tr>
-																		<td class="td1"><a class="link" href="http://localhost:8000/unsubscribe?email=${sanitizedTo}">Unsubscribe</a></td>
+																		<td class="td1">
+																			<a
+																				style="color: inherit; text-decoration: none"
+																				class="link"
+																				href="http://localhost:8000/unsubscribe?email=${sanitizedTo}"
+																				>Unsubscribe</a
+																			>
+																		</td>
 																		<td class="td2"><span>&copy;2023 MUTTLIFE</span></td>
 																	</tr>
 																</table>
@@ -413,7 +444,7 @@ const sendEmail = async (type, to, token) => {
 							</tr>
 						</table>
 					</body>
-				</html>										
+				</html>																					
 				`
 			);
 			break;
