@@ -13,7 +13,7 @@ const PORT = 3000;
 
 // Secret key for JWT & Whitelisted Domains & JWT Expiry
 const JWT_SECRET = process.env.JWT_SECRET_KEY;
-const whitelist = ["http://example.com", "http://yourdomain.com", "http://localhost:8000", "http://www.localhost:8000", "http://www.localhost:9000"];
+const whitelist = ["http://localhost:8000", "http://www.localhost:8000", "http://www.localhost:9000"];
 const expiresIn = "30s"; // Set an expiration time for the token (e.g., 1 hour)
 
 // Configure CORS options
@@ -66,6 +66,7 @@ app.use(helmet());
 app.use("/api/auth", cors(corsOptions)); // Apply to specific endpoint
 app.use("/api/subscribe", cors(corsOptions)); // Apply to specific endpoint
 app.use("/api/verify", cors(corsOptions));
+app.use("/api/unsubscribe", cors(corsOptions));
 
 //Endpoint to generate JWT Token
 app.post("/api/auth", (req, res) => {
