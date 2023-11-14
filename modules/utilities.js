@@ -2,7 +2,7 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-	host: "smtppro.zoho.eu",
+	host: process.env.SMTP_HOST,
 	port: 465,
 	secure: true,
 	auth: {
