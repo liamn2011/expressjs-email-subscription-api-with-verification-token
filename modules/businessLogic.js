@@ -69,7 +69,7 @@ exports.verifySubscriber = async (email, token) => {
 			);
 		}
 		if (customersArray.tags == token && customersArray.email == email) {
-			const updateResult = await shopifyApi.updateCustomers(result.responseBody.customers[0].id, "Verified");
+			await shopifyApi.updateCustomers(result.responseBody.customers[0].id, "Verified");
 			await sendEmail("verifySubscriber", email, "");
 			return utilities.jsonResponse({ success: true, message: "Thank you for confirming your email address.", redirect: "/subscribed" }, 200);
 		} else if (customersArray.tags == "Verified" && customersArray.email == email) {
@@ -234,11 +234,11 @@ const sendEmail = async (type, to, token) => {
 														<tr>
 															<td class="body-td">
 																<div class="body">
-																	<p>Hey ${to}!</p>
+																	<p>Hey ${sanitizedTo}!</p>
 																	<p>{{Verify Email Body}}</p>
 																	<div class="verify-container">
 																		<p>
-																			<strong><a class="link" href="http://localhost:8000/verify?email=${to}&token=${token}">Click Here To Verify</a></strong>
+																			<strong><a class="link" href="http://localhost:8000/verify?email=${sanitizedTo}&token=${sanitizedToken}">Click Here To Verify</a></strong>
 																		</p>
 																	</div>
 																</div>
