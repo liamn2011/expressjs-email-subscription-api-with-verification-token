@@ -71,7 +71,7 @@ exports.verifySubscriber = async (email, token) => {
 		if (customersArray.tags == token && customersArray.email == email) {
 			const updateResult = await shopifyApi.updateCustomers(result.responseBody.customers[0].id, "Verified");
 			await sendEmail("verifySubscriber", email, "");
-			return utilities.jsonResponse({ success: true, message: "Thank you for confirming your email address.", redirect: "/subscribed" }, 200); //Congratulations, you've become a muttlifer
+			return utilities.jsonResponse({ success: true, message: "Thank you for confirming your email address.", redirect: "/subscribed" }, 200);
 		} else if (customersArray.tags == "Verified" && customersArray.email == email) {
 			return utilities.jsonResponse(
 				{
