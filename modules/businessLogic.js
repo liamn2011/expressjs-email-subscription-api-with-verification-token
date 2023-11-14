@@ -172,15 +172,6 @@ const sendEmail = async (type, to, token) => {
 							.td2 {
 								text-align: right;
 							}
-							.logo {
-								/* background: rgb(255, 207, 221);
-								background: linear-gradient(249deg, rgba(255, 207, 221, 1) 0%, rgba(231, 92, 159, 0.5) 52%, rgba(203, 104, 221, 0.5) 100%); */
-								padding: 30px;
-								margin-bottom: 20px;
-							}
-							.logo img {
-								width: 400px;
-							}
 							.body {
 								margin-bottom: 20px;
 							}
@@ -197,14 +188,7 @@ const sendEmail = async (type, to, token) => {
 							}
 							.social-icons {
 								text-align: center;
-							}
-				
-							.instagram,
-							.tiktok {
-								width: 30px;
-								margin: 0 10px 0 10px;
-							}
-				
+							}				
 							.main-image {
 								display: block;
 								margin-left: auto;
@@ -313,15 +297,6 @@ const sendEmail = async (type, to, token) => {
 							.td2 {
 								text-align: right;
 							}
-							.logo {
-								/* background: rgb(255, 207, 221);
-								background: linear-gradient(249deg, rgba(255, 207, 221, 1) 0%, rgba(231, 92, 159, 0.5) 52%, rgba(203, 104, 221, 0.5) 100%); */
-								padding: 30px;
-								margin-bottom: 20px;
-							}
-							.logo img {
-								width: 400px;
-							}
 							.body {
 								margin-bottom: 20px;
 							}
@@ -339,13 +314,6 @@ const sendEmail = async (type, to, token) => {
 							.social-icons {
 								text-align: center;
 							}
-				
-							.instagram,
-							.tiktok {
-								width: 30px;
-								margin: 0 10px 0 10px;
-							}
-				
 							.main-image {
 								display: block;
 								margin-left: auto;
