@@ -2,12 +2,8 @@
 require("dotenv").config();
 const config = require("./config/config");
 const helmet = require("helmet");
-// const sanitizeHtml = require("sanitize-html");
 const express = require("express");
 const cors = require("cors");
-// const jwt = require("jsonwebtoken");
-// const businessLogic = require("./modules/businessLogic");
-// const util = require("./modules/utilities");
 const app = express();
 const PORT = 3000;
 
@@ -17,8 +13,6 @@ const subscribeRoutes = require("./routes/subscribeRoutes");
 const verifyRoutes = require("./routes/verifyRoutes");
 const unsubscribeRoutes = require("./routes/unsubscribeRoutes");
 
-const JWT_SECRET = config.JWT_SECRET;
-const expiresIn = config.expiresIn;
 const corsOptions = config.corsOptions;
 const limiter = config.limiter;
 

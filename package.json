@@ -1,7 +1,7 @@
 {
-	"name": "coming-soon-muttlife-gatsby-js-backend",
+	"name": "expressjs-email-subscription-api-with-verification-token",
 	"version": "1.0.0",
-	"description": "This is the backend for muttlife coming soon website to integrate with shopify when creating new customer accounts on sign up",
+	"description": "This is an API Express.js project for email subscriptions. It includes email verification, transactional emails using Nodemailer, and integration with Shopify for storing subscriber status.",
 	"main": "app.js",
 	"scripts": {
 		"test": "nodemon test.js",
@@ -9,14 +9,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/liamn2011/coming-soon-muttlife-backend.git"
+		"url": "https://github.com/liamn2011/expressjs-email-subscription-api-with-verification-token.git"
 	},
 	"author": "Liam Norton",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/liamn2011/coming-soon-muttlife-backend/issues"
+		"url": "https://github.com/liamn2011/expressjs-email-subscription-api-with-verification-token/issues"
 	},
-	"homepage": "https://github.com/liamn2011/coming-soon-muttlife-backend#readme",
+	"homepage": "https://github.com/liamn2011/expressjs-email-subscription-api-with-verification-token#readme",
 	"dependencies": {
 		"axios": "^1.4.0",
 		"cors": "^2.8.5",

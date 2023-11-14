@@ -2,7 +2,6 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
 const sanitizeHtml = require("sanitize-html");
-const util = require("../modules/utilities");
 
 const JWT_SECRET = config.JWT_SECRET;
 const expiresIn = config.expiresIn;
