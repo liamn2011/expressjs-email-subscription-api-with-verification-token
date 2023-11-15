@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			* {
+				margin: 0;
+			}
+			body {
+				width: 100%;
+				font-size: 16px;
+				font-family: "Roboto", sans-serif;
+			}
+			.body-td,
+			.footer {
+				font-size: 16px;
+				font-family: "Roboto", sans-serif;
+			}
+			p {
+				margin: 30px;
+			}
+			.container {
+				max-width: 50em;
+				background-color: rgb(243, 243, 243);
+			}
+			table {
+				width: 100%;
+			}
+
+			.td2 {
+				text-align: right;
+			}
+			.body {
+				margin-bottom: 20px;
+			}
+			.footer {
+				border-top: solid rgb(74, 70, 70) 1px;
+				padding-top: 30px;
+				padding-bottom: 30px;
+			}
+			.link {
+				color: #0000ee;
+			}
+			.verify-container {
+				text-align: center;
+			}
+			.social-icons {
+				text-align: center;
+			}
+			.main-image {
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			@media screen and (max-width: 598px) {
+				p,
+				li,
+				td {
+					font-size: 20px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<table>
+			<tr align="center">
+				<td>
+					<div class="container">
+						<div class="logo">
+							<h1>Logo</h1>
+						</div>
+						<table>
+							<tr align="center">
+								<table>
+									<tbody>
+										<tr>
+											<td class="body-td">
+												<div class="body">
+													<p>Hey {{To}}</p>
+													<p>Welcome Email Body</p>
+													<div class="social-icons">
+														<h2>Social Media Links</h2>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<table class="footer">
+													<tr>
+														<td class="td1">
+															<a style="color: inherit; text-decoration: none" class="link" href="http://localhost:8000/unsubscribe?email={{To}}"
+																>Unsubscribe</a
+															>
+														</td>
+														<td class="td2"><span>&copy;2023 Copyright</span></td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

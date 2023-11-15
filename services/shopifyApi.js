@@ -1,6 +1,6 @@
 require("dotenv").config();
 const axios = require("axios");
-const utilities = require("./utilities");
+const jsonResponse = require("../helpers/responseFormatter");
 
 const apiCall = async (method, url, data) => {
 	let config = {
@@ -16,10 +16,10 @@ const apiCall = async (method, url, data) => {
 	return axios
 		.request(config)
 		.then((response) => {
-			return utilities.jsonResponse(response.data, response.status);
+			return jsonResponse(response.data, response.status);
 		})
 		.catch((error) => {
-			return utilities.jsonResponse(error, error.response.status);
+			return jsonResponse(error, error.response.status);
 		});
 };
 

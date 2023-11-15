@@ -1,0 +1,11 @@
+subscribeSuccess: Congratulations,
+alreadySubscribed: You're already a subscriber.....
+needVerify: You've already subscribed. To complete the process, please verify your email address. An email has been sent to your inbox.
+
+unsubscribeSuccess: We're sorry to see you go, ........
+alreadyUnsubscribed: You've already unsubscribed. We're sorry to see you go!
+
+verifySucess: Thank you for confirming your email address.
+alreadyVerified: You've already verified, but thank you for reconfirming.
+issueVerifying: Umm, it seems there is an issue with verifying your mailing address.
+verifyEmailError: Unfortunately, we couldn't locate a subscriber with this email address......

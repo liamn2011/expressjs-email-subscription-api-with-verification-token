@@ -1,6 +1,6 @@
 const sanitizeHtml = require("sanitize-html");
-const util = require("../modules/utilities");
-const businessLogic = require("../modules/businessLogic");
+const emailValidation = require("../helpers/emailValidation");
+const subscribeUserService = require("../services/subscribeUser");
 
 const subscribeUser = async (req, res) => {
 	let email = req.body.email;
@@ -13,8 +13,8 @@ const subscribeUser = async (req, res) => {
 	}
 
 	try {
-		if (util.emailValidation(sanitizedEmail)) {
-			const result = await businessLogic.subscribeUser(sanitizedEmail);
+		if (emailValidation(sanitizedEmail)) {
+			const result = await subscribeUserService(sanitizedEmail);
 			res.status(result.status).json(result.responseBody);
 		} else {
 			res.status(200).json({ error: "Invalid Email Address" });

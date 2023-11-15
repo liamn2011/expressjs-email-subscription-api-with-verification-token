@@ -1,6 +1,7 @@
 const sanitizeHtml = require("sanitize-html");
-const util = require("../modules/utilities");
-const businessLogic = require("../modules/businessLogic");
+const emailValidation = require("../helpers/emailValidation");
+const UUIDValidation = require("../helpers/uuidValidation");
+const verifySubscriberService = require("../services/verifySubscriber");
 
 const verifySubscriber = async (req, res) => {
 	let email = req.body.email;
@@ -15,8 +16,8 @@ const verifySubscriber = async (req, res) => {
 	}
 
 	try {
-		if (util.emailValidation(sanitizedEmail) && util.UUIDValidation(sanitizedToken)) {
-			const result = await businessLogic.verifySubscriber(sanitizedEmail, sanitizedToken);
+		if (emailValidation(sanitizedEmail) && UUIDValidation(sanitizedToken)) {
+			const result = await verifySubscriberService(sanitizedEmail, sanitizedToken);
 			res.status(result.status).json(result.responseBody);
 		} else {
 			res.status(200).json({ error: "Validation Error" });

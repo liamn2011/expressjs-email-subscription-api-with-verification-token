@@ -1,6 +1,6 @@
 const sanitizeHtml = require("sanitize-html");
-const util = require("../modules/utilities");
-const businessLogic = require("../modules/businessLogic");
+const emailValidation = require("../helpers/emailValidation");
+const unsubscribeUserService = require("../services/unsubscribeUser");
 
 const unsubscribeUser = async (req, res) => {
 	let email = req.body.email;
@@ -13,8 +13,8 @@ const unsubscribeUser = async (req, res) => {
 	}
 
 	try {
-		if (util.emailValidation(sanitizedEmail)) {
-			const result = await businessLogic.unsubscribeUser(sanitizedEmail);
+		if (emailValidation(sanitizedEmail)) {
+			const result = await unsubscribeUserService(sanitizedEmail);
 			res.status(result.status).json(result.responseBody);
 		} else {
 			res.status(200).json({ error: "Validation Error" });
