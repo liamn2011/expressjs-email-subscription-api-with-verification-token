@@ -21,7 +21,14 @@ const verifySubscriberService = async (email, token) => {
 		if (customersArray.tags == token && customersArray.email == email) {
 			await shopifyApi.updateCustomers(result.responseBody.customers[0].id, "Verified");
 			await sendEmailService("verifySubscriber", email, "");
-			return jsonResponse({ success: true, message: message.verifySucess, redirect: "/subscribed" }, 200);
+			return jsonResponse(
+				{
+					success: true,
+					message: message.verifySucess,
+					redirect: "/subscribed",
+				},
+				200
+			);
 		} else if (customersArray.tags == "Verified" && customersArray.email == email) {
 			return jsonResponse(
 				{

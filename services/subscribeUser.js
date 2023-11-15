@@ -12,10 +12,24 @@ const subscribeUserService = async (email) => {
 		if (customersArray.length == 0) {
 			const result = await createUser(email);
 			console.log(result.status);
-			return jsonResponse({ success: true, message: message.subscribeSuccess, redirect: "/subscribed" }, 200);
+			return jsonResponse(
+				{
+					success: true,
+					message: message.subscribeSuccess,
+					redirect: "/subscribed",
+				},
+				200
+			);
 		} else {
 			if (result.responseBody.customers[0].tags == "Verified" && result.responseBody.customers[0].email == email) {
-				return jsonResponse({ success: false, message: message.alreadySubscribed, redirect: "/" }, 200);
+				return jsonResponse(
+					{
+						success: false,
+						message: message.alreadySubscribed,
+						redirect: "/",
+					},
+					200
+				);
 			} else {
 				await sendEmailService("subscribeUser", email, customersArray[0].tags);
 				return jsonResponse(
