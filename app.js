@@ -4,6 +4,7 @@ const config = require("./config/config");
 const helmet = require("helmet");
 const express = require("express");
 const cors = require("cors");
+
 const app = express();
 const PORT = 3000;
 
@@ -25,7 +26,14 @@ app.listen(PORT, (error) => {
 });
 app.use(helmet());
 
-app.use("/api/auth", cors(corsOptions), authRoutes);
-app.use("/api/subscribe", cors(corsOptions), subscribeRoutes);
-app.use("/api/verify", cors(corsOptions), verifyRoutes);
-app.use("/api/unsubscribe", cors(corsOptions), unsubscribeRoutes);
+// Routes
+const apiRoutes = [
+	{ path: "/api/auth", handler: authRoutes },
+	{ path: "/api/subscribe", handler: subscribeRoutes },
+	{ path: "/api/verify", handler: verifyRoutes },
+	{ path: "/api/unsubscribe", handler: unsubscribeRoutes },
+];
+
+apiRoutes.forEach(({ path, handler }) => {
+	app.use(path, cors(corsOptions), handler);
+});
